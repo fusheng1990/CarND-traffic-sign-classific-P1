@@ -46,10 +46,11 @@ I used the pandas library to calculate summary statistics of the traffic
 signs data set:
 
 * The size of training set is ?
-* The size of the validation set is ?
-* The size of test set is ?
-* The shape of a traffic sign image is ?
-* The number of unique classes/labels in the data set is ?
+the size of training set is 34799
+* The size of the validation set is ? validation set is 
+* The size of test set is ? Test set is 12630
+* The shape of a traffic sign image is ?  Image data shape = (34799, 32, 32, 3)
+* The number of unique classes/labels in the data set is ? Number of classes = 43
 
 ####2. Include an exploratory visualization of the dataset.
 
@@ -61,13 +62,16 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 ####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
-As a first step, I decided to convert the images to grayscale because ...
+As a first step, I decided to convert the images to grayscale because it helps to reduce training time. The RGB shape is (32 , 32, 3), while grayscale shape is (32, 32, 1).
+
+Then I normalizing the data to the range of (-1, 1). by equation (pixel - 128)/ 128, the training set is normalized. From the lessons, I know a wider distributio in the data would make it more difficult to train.
+
+Last， I augment the dataset by functions such as random_scale, random_rotate. random rotation around image center (random value between -15 and 15 deg) and random vertical stretching (as the simplest way to simulate different viewing angle) by random value up to 40 %.
 
 Here is an example of a traffic sign image before and after grayscaling.
 
 ![alt text][image2]
 
-As a last step, I normalized the image data because ...
 
 I decided to generate additional data because ... 
 
@@ -79,28 +83,41 @@ Here is an example of an original image and an augmented image:
 
 The difference between the original data set and the augmented data set is the following ... 
 
+Number of training examples = 382789
+Number of testing examples = 12630
+Image data shape = (34799, 32, 32, 3)
+Number of classes = 43
+
+
 
 ####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
+
+To get a better performance, the layer is the deeper, the better. parameter efficiency get much more performance with pure parameters by going deeper rather than wider.Secondly, I tend to have a hierarchical structure.
+
 
 My final model consisted of the following layers:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Input         		| 32x32x1 Y channel image   							| 
+| Convolution 5x5     	| 1x1 stride, valid padding, outputs 28x28x6 	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
-|						|												|
-|						|												|
- 
-
+| Max pooling	      	| 2x2 stride,  outputs 14x14x6 				|
+| Convolution 5x5	    | 1x1 stride, valid padding, outputs 10x10x16    									|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 5x5x16 				|
+| Flatten		| Input 5x5x16  output 400        									|
+| Fully connect				| Input = 400. Output = 120        									|
+| RELU					|												|
+|		Dropout				|												|
+|			 Fully Connected			|				Input = 120. Output = 84								|
+| RELU					|												|
+|		Dropout				|												|
+|			 Fully Connected			|				Input = 84. Output = 10								|
 
 ####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-To train the model, I used an ....
+To train the model, I used an Adam optimizer , learning rate of 1e-4 , dropout rate of 0.3 and batch size of 128.
 
 ####4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
@@ -108,6 +125,11 @@ My final model results were:
 * training set accuracy of ?
 * validation set accuracy of ? 
 * test set accuracy of ?
+
+
+EPOCHS = 150  BATCH_SIZE = 128 dropout = .5 rate = 0.0005
+2017-08-23 01:18:44.041993 EPOCH 150 - 11149 sec ...
+2017-08-23 01:18:44.042379 Training error = 0.000 Validation error = 0.029
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
