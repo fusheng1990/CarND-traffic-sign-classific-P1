@@ -53,6 +53,7 @@ the size of training set is 34799
 
 Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
 [//]: # (Image References)
+
 [image1]: ./pic/onepicture.png "Visualization"
 
 ###Design and Test a Model Architecture
