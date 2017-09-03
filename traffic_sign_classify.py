@@ -249,7 +249,19 @@ def LeNet(x):
     """
     mu = 0
     sigma = 0.1
+  
+###############################adding two more layers###############################################
+    conv00_W = tf.Variable(tf.truncated_normal(shape=(5,5,1,1), mean = mu, stddev = sigma))
+    conv00_b = tf.Variable(tf.zeros(1))
+    conv00 = tf.nn.conv2d(x,conv00_W,strides=[1,1,1,1],padding='SAME')+conv00_b
     
+    conv00 = tf.nn.relu(conv00)     
+    
+    conv0_W = tf.Variable(tf.truncated_normal(shape=(5,5,1,1), mean = mu, stddev = sigma))
+    conv0_b = tf.Variable(tf.zeros(1))
+    conv0 = tf.nn.conv2d(conv00,conv0_W,strides=[1,1,1,1],padding='SAME')+conv0_b
+    
+    conv0 = tf.nn.relu(conv0)       
     # Layer 1: Convolutional. Input = 32x32x3. Output = 28x28x6.
     #variables to allow weights and biases to be modified
     #the weights must be the dimensions of features by labels. The number of features is the size of the image
